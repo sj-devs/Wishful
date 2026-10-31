@@ -1,0 +1,82 @@
+Wishful – Proprietäre Lizenz / Proprietary License
+
+Copyright (c) 2026 Stefan Matteo Kauflin und Joel Felix
+Alle Rechte vorbehalten. / All rights reserved.
+
+================================================================================
+DEUTSCH (massgebende Fassung)
+================================================================================
+
+1. Rechteinhaber
+   Sämtliche Rechte an dieser Software, einschliesslich Quellcode, Objektcode,
+   Design, Grafiken, Texten, Dokumentation, Konzepten und Namen ("Wishful"),
+   (nachfolgend "Software") liegen ausschliesslich bei Stefan Matteo Kauflin
+   und Joel Felix (nachfolgend "Rechteinhaber").
+
+2. Keine Lizenzerteilung
+   Die Einsicht in dieses Repository gewährt keinerlei Nutzungsrechte. Ohne
+   vorgängige, ausdrückliche und schriftliche Zustimmung beider Rechteinhaber
+   ist insbesondere untersagt:
+   a) die Software ganz oder teilweise zu kopieren, zu vervielfältigen oder
+      herunterzuladen, ausser soweit technisch zur blossen Ansicht nötig;
+   b) die Software zu forken, zu klonen, zu spiegeln oder anderweitig
+      weiterzuverbreiten, öffentlich zugänglich zu machen oder zu veröffentlichen;
+   c) die Software zu verändern, zu übersetzen, zu bearbeiten oder abgeleitete
+      Werke daraus zu erstellen;
+   d) die Software kommerziell oder nicht-kommerziell zu nutzen, zu verkaufen,
+      zu vermieten, zu lizenzieren oder Dritten zur Verfügung zu stellen;
+   e) die Software zu dekompilieren, zu disassemblieren oder anderweitig
+      zurückzuentwickeln (Reverse Engineering), soweit gesetzlich zulässig;
+   f) die Software oder Teile davon zum Training von Machine-Learning- oder
+      KI-Modellen zu verwenden;
+   g) Copyright-Vermerke, Marken oder diesen Lizenztext zu entfernen oder zu
+      verändern.
+
+3. Beiträge (Contributions)
+   Beiträge jeglicher Art (Pull Requests, Patches, Issues mit Code, Vorschläge)
+   werden nur nach vorgängiger schriftlicher Einladung durch beide
+   Rechteinhaber entgegengenommen. Wer mit Zustimmung einen Beitrag leistet,
+   überträgt sämtliche übertragbaren Rechte daran unentgeltlich, zeitlich und
+   örtlich unbeschränkt an die Rechteinhaber und verzichtet, soweit gesetzlich
+   zulässig, auf die Geltendmachung von Urheberpersönlichkeitsrechten.
+
+4. Gewährleistungsausschluss
+   Die Software wird ohne jegliche Gewährleistung bereitgestellt. Eine Haftung
+   der Rechteinhaber ist ausgeschlossen, soweit gesetzlich zulässig.
+
+5. Rechtsverletzungen
+   Jede Nutzung ausserhalb dieser Bestimmungen stellt eine Verletzung des
+   Urheberrechts dar. Die Rechteinhaber behalten sich sämtliche zivil- und
+   strafrechtlichen Schritte vor, insbesondere gemäss dem Schweizerischen
+   Bundesgesetz über das Urheberrecht und verwandte Schutzrechte (URG).
+
+6. Anwendbares Recht und Gerichtsstand
+   Es gilt ausschliesslich schweizerisches Recht unter Ausschluss des
+   Kollisionsrechts. Gerichtsstand ist der Wohnsitz eines der Rechteinhaber
+   in der Schweiz.
+
+7. Kontakt
+   Anfragen für Nutzungsrechte oder Zusammenarbeit sind an die Rechteinhaber
+   über das GitHub-Repository zu richten.
+
+================================================================================
+ENGLISH (convenience translation – the German version prevails)
+================================================================================
+
+All rights to this software, including source code, object code, design,
+graphics, texts, documentation, concepts and the name "Wishful" are held
+exclusively by Stefan Matteo Kauflin and Joel Felix.
+
+Viewing this repository grants no rights whatsoever. Without the prior, express
+and written consent of both rights holders, you may NOT copy, download, fork,
+clone, mirror, redistribute, publish, modify, create derivative works from,
+use (commercially or non-commercially), sell, sublicense, reverse engineer,
+or use this software for training machine-learning / AI models, nor remove
+any copyright notice.
+
+Contributions are only accepted upon prior written invitation by both rights
+holders. Any accepted contribution transfers all transferable rights to the
+rights holders free of charge.
+
+The software is provided "as is" without warranty of any kind. Swiss law
+applies exclusively.
