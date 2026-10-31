@@ -1,307 +1,308 @@
-# Wishful – Projektplan
+# Wishful – Project Plan
 
-> Native Mobile App in Swift (iOS zuerst, Android später) für Wunsch-Posts, bei denen andere den Wunsch erfüllen können.
-> Team: Stefan Matteo Kauflin + Joel Felix · Stand: 31.10.2026
-
----
-
-## 1. Anforderungen (zusammengefasst)
-
-- **Account & Profil:** Registrierung/Login, Lieferadresse wird **verschlüsselt** gespeichert und ist nie öffentlich sichtbar. Öffentlich sind nur Ort/Kanton und Land.
-- **Wunsch-Posts:** Man gibt einen Titel (z.B. «PS5-Controller») und einen Produktlink ein. Das System erkennt Preis, Bild und Shopnamen automatisch.
-- **Feeds:** «For You» (alle bzw. empfohlene Posts) und «Friends» (nur markierte Freunde/Familie), umschaltbar wie bei TikTok.
-- **Beziehungen:** Man kann Profile als Freund oder Familie markieren (mit gegenseitiger Bestätigung).
-- **Schenken:** Andere Nutzer kaufen einen Wunsch, **ohne die Adresse des Empfängers je zu sehen**. Wishful bestellt das Produkt automatisch und lässt es direkt an den Empfänger liefern.
-- **Geschäftsmodell:** Provision, die der Schenker zusätzlich bezahlt (siehe Abschnitt 2).
-- **Distribution:** Zuerst Apple App Store (native Swift-App), danach Google Play Store.
+> Native mobile app in Swift (iOS first, Android later) for wish posts that other people can fulfill.
+> Team: Stefan Matteo Kauflin + Joel Felix · Last updated: 2026-10-31
 
 ---
 
-## 2. Kernentscheidung: Wie funktioniert das Schenken?
+## 1. Requirements (Summary)
 
-### Übersicht der Optionen
+- **Account & profile:** Sign-up/login. The delivery address is stored **encrypted** and is never publicly visible. Only city/canton and country are public.
+- **Wish posts:** Users enter a title (e.g. "PS5 controller") and a product link. The system automatically detects price, image and shop name.
+- **Feeds:** "For You" (all/recommended posts) and "Friends" (only tagged friends/family), switchable like on TikTok.
+- **Relationships:** Users can tag profiles as friends or family (mutually confirmed).
+- **Gifting:** Other users buy a wish **without ever seeing the recipient's address**. Wishful orders the product automatically and has it shipped directly to the recipient.
+- **Business model:** Commission paid on top by the gifter (see section 2).
+- **Distribution:** Apple App Store first (native Swift app), Google Play Store later.
 
-| Option | Ablauf | Vorteile | Nachteile |
+---
+
+## 2. Core Decision: How Does Gifting Work?
+
+### Options Overview
+
+| Option | Flow | Pros | Cons |
 |---|---|---|---|
-| **A – Geldgeschenk** | Schenker zahlt → Geld geht zweckgebunden an den Empfänger → Empfänger bestellt selbst | Technisch am einfachsten | Betrugsrisiko (Fake-Wünsche), eigentlich «Geld schenken», Geldwäscherei-Thematik (GwG) |
-| **B – Wishful bestellt manuell** | Schenker zahlt an Wishful → jemand vom Team bestellt von Hand | Echte Ware, kein Technik-Risiko | Skaliert nicht, viel Handarbeit |
-| **C – Adresse beim Kauf freigeben** | Empfänger gibt die Adresse pro Kauf frei | Simpel | Bricht das Datenschutz-Versprechen → **nicht empfohlen** |
-| **D – Automatische Bestellung (Dropshipping-Prinzip)** ⭐ | Schenker zahlt in der App → **das System öffnet den Produktlink, bestellt und liefert an die hinterlegte Adresse des Empfängers** | Entspricht der Idee genau, Adresse bleibt komplett verborgen, Provision pro Bestellung, kein Geldtransfer an Private (kein GwG-Thema) | Technisch anspruchsvoll, ihr seid rechtlich Käufer bzw. Wiederverkäufer (Retouren, Garantie, MWST) |
+| **A – Cash gift** | Gifter pays → money goes to the recipient, earmarked → recipient orders themselves | Technically simplest | Fraud risk (fake wishes), essentially "sending money", anti-money-laundering concerns (AMLA) |
+| **B – Wishful orders manually** | Gifter pays Wishful → a team member places the order by hand | Real goods, no technical risk | Doesn't scale, lots of manual work |
+| **C – Reveal address on purchase** | Recipient releases their address per purchase | Simple | Breaks the privacy promise → **not recommended** |
+| **D – Automated ordering (dropshipping model)** (chosen) | Gifter pays in the app → **the system opens the product link, places the order and ships to the recipient's stored address** | Matches the idea exactly, address stays fully hidden, commission per order, no money transfer to private individuals (no AMLA issue) | Technically demanding; legally you are the buyer/reseller (returns, warranty, VAT) |
 
-**Entscheidung: Option D.** Sie wird **stufenweise** umgesetzt, weil eine vollautomatische Bestellung in *jedem* beliebigen Shop am Anfang nicht realistisch ist.
+**Decision: Option D.** It is implemented **in stages**, because fully automated ordering from *any* shop is not realistic at the start.
 
-### Option D im Detail
+### Option D in Detail
 
-#### Ablauf
-1. Der Schenker tippt auf «Wunsch erfüllen».
-2. Das System **prüft den Preis live** über den Link (er kann sich seit dem Posten geändert haben) und berechnet die Provision.
-3. Der Schenker sieht den Gesamtbetrag (Artikel + Versand + Provision) und bezahlt.
-4. Erst **nach erfolgreichem Zahlungseingang** löst das System die Bestellung im Shop aus. Lieferadresse ist die verschlüsselte Adresse des Empfängers, entschlüsselt nur in diesem Moment und serverseitig.
-5. Der Empfänger bekommt eine Push-Nachricht und eine E-Mail, der Schenker eine Bestellbestätigung.
-6. Wenn die Bestellung fehlschlägt (ausverkauft, Preis stark gestiegen, Shop liefert nicht in die Region), erhält der Schenker **automatisch eine volle Rückerstattung**.
+#### Flow
+1. The gifter taps "Fulfill wish".
+2. The system **re-checks the price live** via the link (it may have changed since posting) and calculates the commission.
+3. The gifter sees the total (item + shipping + commission) and pays.
+4. Only **after the payment is confirmed** does the system place the order with the shop. The delivery address is the recipient's encrypted address, decrypted only at that moment and server-side only.
+5. The recipient gets a push notification and an email; the gifter gets an order confirmation.
+6. If the order fails (sold out, significant price increase, shop doesn't ship to the region), the gifter **automatically receives a full refund**.
 
-#### Provisionsmodell
+#### Commission Model
 
-| Artikelpreis | Provision (zahlt der Schenker) |
+| Item price | Commission (paid by the gifter) |
 |---|---|
-| unter CHF 100.– | **CHF 5.– pauschal** |
-| ab CHF 100.– | **5 % des Artikelpreises** |
+| below CHF 100 | **CHF 5 flat** |
+| CHF 100 and above | **5% of the item price** |
 
-Beispiele:
+Examples:
 
-| Artikel | Provision | Total für den Schenker (ohne Versand) |
+| Item | Commission | Total for the gifter (excl. shipping) |
 |---|---|---|
-| CHF 25.– | CHF 5.– | CHF 30.– |
-| CHF 99.– | CHF 5.– | CHF 104.– |
-| CHF 100.– | CHF 5.– | CHF 105.– |
-| CHF 300.– | CHF 15.– | CHF 315.– |
+| CHF 25 | CHF 5 | CHF 30 |
+| CHF 99 | CHF 5 | CHF 104 |
+| CHF 100 | CHF 5 | CHF 105 |
+| CHF 300 | CHF 15 | CHF 315 |
 
-> Bei genau CHF 100.– ergeben beide Regeln CHF 5.–, es gibt also keinen Preissprung an der Grenze. ✅
+> At exactly CHF 100 both rules yield CHF 5, so there is no price jump at the threshold.
 >
-> **Achtung, Gebühren des Zahlungsanbieters:** Die Gebühren (je nach Anbieter ca. 1.3–3 % + Fixbetrag) gehen von eurer Provision ab. Bei einem Artikel für CHF 25.– bleiben euch von den CHF 5.– ca. CHF 4.–. Rechnet das je nach gewähltem Zahlungsanbieter durch und klärt, ob Versandkosten provisionspflichtig sind (Empfehlung: Provision nur auf den Artikelpreis).
+> **Note on payment provider fees:** Fees (roughly 1.3–3% + a fixed amount, depending on the provider) come out of your commission. On a CHF 25 item you keep roughly CHF 4 of the CHF 5. Calculate this for each provider and decide whether shipping costs are subject to commission (recommendation: commission on the item price only).
 
-#### Wie bestellt «das System» technisch? (Stufen)
+#### How Does "the System" Order? (Stages)
 
-| Stufe | Methode | Wann |
+| Stage | Method | When |
 |---|---|---|
-| **1 – Concierge-MVP** | Das System bereitet alles vor (Link, Menge, Variante, Adresse, Betrag) und erstellt einen Auftrag im Admin-Dashboard. **Ihr klickt im Shop selbst auf «Kaufen»**, Tracking-Nummer wird nachgetragen. | Launch, erste Nutzer. So lernt ihr die Abläufe kennen. |
-| **2 – Shop-APIs & Partnerprogramme** | Direkte Bestellung über offizielle Schnittstellen (z.B. Shopify-basierte Shops, Partner-/Affiliate-APIs von grossen Händlern, Universal-Checkout-Dienste wie Rye; Verfügbarkeit in der Schweiz prüfen) | Sobald es genug Bestellungen gibt |
-| **3 – Browser-Automatisierung** | Headless-Browser (z.B. Playwright) bestellt für ausgewählte Top-Shops | Nur gezielt. Fehleranfällig, oft gegen die AGB der Shops, Captchas und Bot-Schutz |
+| **1 – Concierge MVP** | The system prepares everything (link, quantity, variant, address, amount) and creates a job in the admin dashboard. **You click "Buy" in the shop yourselves**, then enter the tracking number. | Launch, first users. You learn the processes this way. |
+| **2 – Shop APIs & partner programs** | Direct ordering via official interfaces (e.g. Shopify-based shops, partner/affiliate APIs of large retailers, universal checkout services like Rye; check availability in Switzerland) | Once order volume justifies it |
+| **3 – Browser automation** | Headless browser (e.g. Playwright) orders from selected top shops | Selectively only. Fragile, often violates shop terms, captchas and bot protection |
 
-#### Was Option D zusätzlich braucht
-- **Firmen-Zahlungsmittel für die Shop-Bestellungen** (z.B. Firmenkreditkarte oder virtuelle Karte pro Bestellung). Das Geld des Schenkers ist dabei immer schon eingegangen, bevor ihr bestellt, ihr müsst also nichts vorfinanzieren.
-- **Kundenkonten bei den Shops** (Firmenkonto pro Shop) bzw. Gast-Checkout
-- **Retouren & Garantie:** Prozess definieren (Empfänger meldet sich bei Wishful, ihr wickelt mit dem Shop ab)
-- **MWST:** Der volle Artikelpreis kann als euer Umsatz zählen, nicht nur die Provision. Die Pflicht zur MWST-Registrierung beginnt bei **CHF 100'000 Jahresumsatz** und ist damit schnell erreicht. Mit Treuhand bzw. Fachperson klären, ob ihr als **Vermittler** (Provision = Umsatz) oder als **Wiederverkäufer** auftretet.
-- **Ausland:** Bestellungen aus Shops ausserhalb der Schweiz verursachen Zoll bzw. Einfuhr-MWST. Für das MVP **nur Schweizer Shops** oder Shops, die in die Schweiz liefern.
-- **Chargebacks:** Schenker ziehen Zahlungen zurück, nachdem die Ware schon bestellt wurde → Betrugserkennung, Limits für neue Accounts
+#### What Option D Additionally Requires
+- **Company payment method for shop orders** (e.g. corporate credit card or a virtual card per order). The gifter's money has always arrived before you order, so no pre-financing is needed.
+- **Customer accounts with shops** (company account per shop) or guest checkout
+- **Returns & warranty:** define a process (recipient contacts Wishful, you handle it with the shop)
+- **VAT:** The full item price may count as your revenue, not just the commission. Swiss VAT registration is mandatory from **CHF 100,000 annual revenue**, which you could reach quickly. Clarify with an accountant whether you act as an **intermediary** (commission = revenue) or a **reseller**.
+- **International:** Orders from shops outside Switzerland incur customs duties/import VAT. For the MVP, **Swiss shops only** or shops that ship to Switzerland.
+- **Chargebacks:** Gifters reverse payments after the goods are ordered → fraud detection, limits for new accounts
 
 ---
 
-## 3. Tech-Stack (Empfehlung)
+## 3. Tech Stack (Recommendation)
 
-| Bereich | Wahl | Begründung |
+| Area | Choice | Rationale |
 |---|---|---|
-| App (iOS) | **Swift + SwiftUI** (nativ), Xcode, Swift Package Manager | Beste Performance und Apple-Integration (Apple Pay, Keychain, Push, Sign in with Apple). **Braucht einen Mac mit Xcode.** |
-| App (Android) | **Noch offen** (siehe unten) | Swift läuft nicht direkt auf Android |
-| Backend-Code | Supabase Edge Functions (TypeScript/Deno) oder Swift auf dem Server (Vapor) | Betrifft nur den Server, die App bleibt Swift |
-| Backend | **Supabase** (Postgres, Auth, Storage, Edge Functions), Region **EU (Frankfurt) oder Zürich** | Row Level Security, schneller Start, Daten in Europa |
-| Captcha | **Cloudflare Turnstile** oder **hCaptcha** | Von Supabase Auth direkt unterstützt, datenschutzfreundlicher als Google reCAPTCHA |
-| Link-Scraper | Separater, isolierter Service (Cloud Run / Fly.io) | Wegen SSRF-Risiko vom Backend getrennt (siehe Abschnitt 6) |
-| Bestell-Service | Separater Service mit Auftrags-Queue (Stufe 1: Admin-Dashboard) | Bestellungen zuverlässig, wiederholbar und nachvollziehbar |
-| Zahlungen | **Noch offen**. Kandidaten: Stripe, Datatrans, Payrexx, Wallee, Adyen | Muss TWINT, Karten, Apple Pay und Google Pay können. Keine Kartendaten bei euch. |
-| E-Mail | Transaktions-E-Mail-Dienst (z.B. Resend, Postmark, Brevo), EU-Region bevorzugt | Automatische Benachrichtigungen und Bestellbestätigungen |
-| Push | Apple Push Notification Service (APNs), für Android später Firebase Cloud Messaging | – |
-| Moderation | Meldefunktion, Blockieren, Admin-Dashboard | Pflicht bei nutzergenerierten Inhalten (Apple Guideline 1.2) |
+| App (iOS) | **Swift + SwiftUI** (native), Xcode, Swift Package Manager | Best performance and Apple integration (Apple Pay, Keychain, push, Sign in with Apple). **Requires a Mac with Xcode.** |
+| App (Android) | **Open** (see below) | Swift doesn't run directly on Android |
+| Backend code | Supabase Edge Functions (TypeScript/Deno) or server-side Swift (Vapor) | Server only; the app stays Swift |
+| Backend | **Supabase** (Postgres, Auth, Storage, Edge Functions), region **EU (Frankfurt) or Zurich** | Row Level Security, fast start, data stays in Europe |
+| Captcha | **Cloudflare Turnstile** or **hCaptcha** | Natively supported by Supabase Auth, more privacy-friendly than Google reCAPTCHA |
+| Link scraper | Separate, isolated service (Cloud Run / Fly.io) | Isolated from the backend due to SSRF risk (see section 6) |
+| Order service | Separate service with a job queue (stage 1: admin dashboard) | Reliable, retryable, traceable orders |
+| Payments | **Open**. Candidates: Stripe, Datatrans, Payrexx, Wallee, Adyen | Must support TWINT, cards, Apple Pay and Google Pay. No card data on your side. |
+| Email | Transactional email service (e.g. Resend, Postmark, Brevo), EU region preferred | Automated notifications and order confirmations |
+| Push | Apple Push Notification service (APNs), later Firebase Cloud Messaging for Android | – |
+| Moderation | Reporting, blocking, admin dashboard | Required for user-generated content (Apple Guideline 1.2) |
 
-### Swift und Android
+### Swift and Android
 
-Swift-Apps laufen nur auf Apple-Geräten. Für Android gibt es drei Wege:
+Swift apps only run on Apple devices. There are three paths to Android:
 
-| Weg | Beschreibung | Aufwand |
+| Path | Description | Effort |
 |---|---|---|
-| **1 – iOS zuerst** ⭐ | Zuerst nur die iOS-App in Swift bauen und launchen, Android erst nach erfolgreicher Beta | Am wenigsten, Fokus auf ein Produkt |
-| **2 – Skip** | Framework, das Swift/SwiftUI-Code in eine native Android-App (Kotlin/Jetpack Compose) übersetzt. Eine Codebasis in Swift. | Mittel. Noch jung, nicht alle Bibliotheken werden unterstützt, aktuelle Lizenz und Kosten prüfen. |
-| **3 – Separate Android-App** | Zweite App in Kotlin + Jetpack Compose, gleiches Backend | Hoch, alles doppelt bauen und pflegen |
+| **1 – iOS first** (recommended) | Build and launch the iOS app in Swift first, Android only after a successful beta | Lowest, focus on one product |
+| **2 – Skip** | Framework that transpiles Swift/SwiftUI code into a native Android app (Kotlin/Jetpack Compose). Single Swift codebase. | Medium. Still young, not all libraries supported; check current license and pricing. |
+| **3 – Separate Android app** | Second app in Kotlin + Jetpack Compose, same backend | High, everything built and maintained twice |
 
-**Empfehlung:** Weg 1. Die gesamte Logik (Preise, Provision, Bestellungen, Berechtigungen) liegt im Backend, nicht in der App. Damit bleibt eine spätere Android-App (Weg 2 oder 3) gut machbar.
+**Recommendation:** Path 1. All business logic (prices, commission, orders, permissions) lives in the backend, not the app. That keeps a later Android app (path 2 or 3) very feasible.
 
-**Voraussetzung:** iOS-Entwicklung mit Swift geht nur auf **macOS mit Xcode**. Wer am Code der App arbeitet, braucht einen Mac. Ohne Mac geht es nur über einen gemieteten Mac in der Cloud (z.B. MacinCloud) oder Cloud-Builds (Xcode Cloud, GitHub Actions mit macOS-Runnern). Für die tägliche Entwicklung ist das umständlich.
+**Prerequisite:** iOS development with Swift requires **macOS with Xcode**. Anyone working on the app code needs a Mac. Without one, the only options are a rented cloud Mac (e.g. MacinCloud) or cloud builds (Xcode Cloud, GitHub Actions with macOS runners), which is cumbersome for daily development.
 
-> Hinweis: Physische Waren dürfen ohne Apples In-App-Kauf (und ohne die 30 % Gebühr) verkauft werden (Guideline 3.1.5). Mit Option D wird tatsächlich ein physisches Produkt verkauft, das passt also gut.
+> Note: Physical goods may be sold without Apple's In-App Purchase (and without the 30% fee) (Guideline 3.1.5). With option D an actual physical product is sold, so this fits well.
 
 ---
 
-## 4. Phasen
+## 4. Phases
 
-> Bis Phase 6 testet ihr die App im iOS-Simulator und auf euren eigenen iPhones. Dafür reicht eine **kostenlose Apple-ID** in Xcode (die App muss dann alle 7 Tage neu installiert werden). Ein bezahlter Developer Account wird erst für TestFlight und den App Store nötig.
+> Until phase 6 you test the app in the iOS Simulator and on your own iPhones. A **free Apple ID** in Xcode is enough for that (the app must be reinstalled every 7 days). A paid developer account is only required for TestFlight and the App Store.
 
-### Phase 0 – Entscheidungen & Setup (1–2 Wochen) · Komplexität: niedrig
-- [ ] Mindestalter festlegen (Empfehlung: **18+**)
-- [ ] Klären, wer einen Mac mit Xcode hat (Voraussetzung für die Swift-Entwicklung)
-- [ ] GitHub-Repo, CI (GitHub Actions mit macOS-Runner), Xcode-Projekt (SwiftUI, iOS 17+), Supabase-Projekt in der EU-Region
-- [ ] Code-Stil festlegen: SwiftLint, SwiftFormat, Architektur (z.B. MVVM mit `@Observable`), Tests mit Swift Testing / XCTest
+### Phase 0 – Decisions & Setup (1–2 weeks) · Complexity: low
+- [ ] Set minimum age (recommendation: **18+**)
+- [ ] Clarify who has a Mac with Xcode (required for Swift development)
+- [ ] GitHub repo, CI (GitHub Actions with macOS runner), Xcode project (SwiftUI, iOS 17+), Supabase project in the EU region
+- [ ] Define code style: SwiftLint, SwiftFormat, architecture (e.g. MVVM with `@Observable`), tests with Swift Testing / XCTest
 - [ ] Wireframes in Figma
 
-### Phase 1 – Auth, Profil, Adresse (2–3 Wochen) · Komplexität: mittel
-- [ ] Login mit E-Mail, Sign in with Apple (Pflicht, sobald es Google-Login gibt) und Google, **mit Captcha bei Registrierung, Login und Passwort-Reset** (Turnstile/hCaptcha, serverseitig in Supabase Auth geprüft)
-- [ ] Profil: Name, Bild, Bio, öffentlicher Standort (Kanton/Ort und Land, frei wählbar)
-- [ ] Adresse in separater, verschlüsselter Tabelle (siehe Abschnitt 6)
-- [ ] Account löschen und Daten exportieren (verlangt von nDSG und Apple)
+### Phase 1 – Auth, Profile, Address (2–3 weeks) · Complexity: medium
+- [ ] Login via email, Sign in with Apple (mandatory once Google login exists) and Google, **with captcha on sign-up, login and password reset** (Turnstile/hCaptcha, verified server-side in Supabase Auth)
+- [ ] Profile: name, picture, bio, public location (canton/city and country, user-selectable)
+- [ ] Address in a separate, encrypted table (see section 6)
+- [ ] Account deletion and data export (required by the FADP and Apple)
 
-### Phase 2 – Posts & Link-Erkennung (3 Wochen) · Komplexität: hoch
-- [ ] Post erstellen (Titel, Link, Variante wie Grösse oder Farbe, optionale Notiz) mit Vorschau
-- [ ] Scraper versucht der Reihe nach: schema.org/JSON-LD `Product` → Open-Graph-Tags → shopspezifische Parser für die Top-Shops (Galaxus, Digitec, Zalando …)
-- [ ] Preis und Bild werden mit Zeitstempel gecacht, Preise periodisch aktualisiert
-- [ ] Fallback: Preis und Bild manuell eingeben, falls die Erkennung scheitert
-- [ ] Prüfen, ob der Shop **unterstützt wird** (liefert in die Schweiz, bestellbar). Nicht unterstützte Shops werden im Post gekennzeichnet.
-- [ ] Post-Status: offen → bezahlt → bestellt → versandt → geliefert
+### Phase 2 – Posts & Link Detection (3 weeks) · Complexity: high
+- [ ] Create post (title, link, variant such as size or color, optional note) with preview
+- [ ] Scraper tries in order: schema.org/JSON-LD `Product` → Open Graph tags → shop-specific parsers for top shops (Galaxus, Digitec, Zalando, ...)
+- [ ] Price and image cached with timestamp, prices refreshed periodically
+- [ ] Fallback: enter price and image manually if detection fails
+- [ ] Check whether the shop is **supported** (ships to Switzerland, orderable). Unsupported shops are flagged on the post.
+- [ ] Post status: open → paid → ordered → shipped → delivered
 
-### Phase 3 – Feed & Freunde (3 Wochen) · Komplexität: mittel
-- [ ] Freundschafts- und Familienanfragen mit gegenseitiger Bestätigung
-- [ ] Friends-Feed chronologisch
-- [ ] «For You»-Feed im MVP mit einfachem Ranking (Aktualität, Region, Preisklasse). Echtes Profiling erst später und mit Transparenz (siehe Abschnitt 7)
-- [ ] Sichtbarkeit pro Post: öffentlich oder nur Freunde
+### Phase 3 – Feed & Friends (3 weeks) · Complexity: medium
+- [ ] Friend and family requests with mutual confirmation
+- [ ] Friends feed, chronological
+- [ ] "For You" feed in the MVP with simple ranking (recency, region, price range). Real profiling later and with transparency (see section 7)
+- [ ] Visibility per post: public or friends only
 
-### Phase 4 – Schenken, Zahlung & Bestellung (4–6 Wochen) · Komplexität: hoch
-- [ ] **Zahlungsanbieter evaluieren und entscheiden** (noch offen, ob Stripe oder eine Alternative). Kriterien: TWINT, Gebühren, Betrugsschutz, Schweizer Firma ja/nein, Auszahlung, Aufwand für die Integration
-- [ ] Checkout: Preis live neu prüfen, Provision berechnen (unter CHF 100.– → CHF 5.–, ab CHF 100.– → 5 %), Gesamtbetrag transparent anzeigen
-- [ ] Benachrichtigung «Du wurdest beschenkt!» per Push **und automatische E-Mail an die hinterlegte E-Mail-Adresse des Empfängers**, zusätzlich Bestell- und Zahlungsbestätigung per E-Mail an den Schenker. Optional anonym schenken (dann taucht der Name des Schenkers in keiner E-Mail auf).
-- [ ] Bestell-Service Stufe 1 (Concierge): nach Zahlungseingang Auftrag im Admin-Dashboard, Tracking-Nummer erfassen, Statusmeldungen per Push und E-Mail
-- [ ] Automatische Rückerstattung, wenn die Bestellung fehlschlägt
-- [ ] Retouren- und Garantie-Prozess, Umgang mit Chargebacks
+### Phase 4 – Gifting, Payment & Ordering (4–6 weeks) · Complexity: high
+- [ ] **Evaluate and choose a payment provider** (still open whether Stripe or an alternative). Criteria: TWINT, fees, fraud protection, Swiss company yes/no, payouts, integration effort
+- [ ] Checkout: re-check price live, calculate commission (below CHF 100 → CHF 5, from CHF 100 → 5%), display total transparently
+- [ ] "You've received a gift!" notification via push **and an automated email to the recipient's registered email address**, plus order and payment confirmation email to the gifter. Optional anonymous gifting (then the gifter's name appears in no email).
+- [ ] Order service stage 1 (concierge): after payment, job in the admin dashboard, record tracking number, status updates via push and email
+- [ ] Automatic refund if the order fails
+- [ ] Returns and warranty process, chargeback handling
 
-### Phase 5 – Sicherheit, Moderation, Recht (2–3 Wochen, teilweise parallel) · Komplexität: mittel
-- [ ] Melden, Blockieren, Admin-Tool, Wortfilter
-- [ ] **GmbH gründen** (Haftung, Firmenkonto, Firmenkarte für Bestellungen)
-- [ ] Datenschutzerklärung, AGB (inkl. Provision, Rückerstattung, Retouren), Impressum, Datenschutz-Folgenabschätzung (DSFA)
-- [ ] MWST-Frage mit Treuhand bzw. Fachperson klären (Vermittler oder Wiederverkäufer)
-- [ ] Externer Security-Review bzw. Pentest vor dem Launch
+### Phase 5 – Security, Moderation, Legal (2–3 weeks, partly in parallel) · Complexity: medium
+- [ ] Reporting, blocking, admin tool, word filter
+- [ ] **Found a company (GmbH / LLC)** (liability, business account, company card for orders)
+- [ ] Privacy policy, terms of service (incl. commission, refunds, returns), legal notice (imprint), data protection impact assessment (DPIA)
+- [ ] Clarify VAT with an accountant (intermediary vs. reseller)
+- [ ] External security review / penetration test before launch
 
-### Phase 6 – Store-Account, Beta & iOS-Launch (3–4 Wochen)
-- [ ] **Apple Developer Account (99 USD/Jahr)**, idealerweise auf die **GmbH**. Für einen Firmen-Account bei Apple braucht es eine D-U-N-S-Nummer (kostenlos, Bearbeitung kann einige Tage dauern).
-- [ ] Signing, Provisioning und Push-Zertifikate (APNs) einrichten
-- [ ] TestFlight-Beta (intern und extern)
-- [ ] App-Store-Listing, Altersfreigabe, App Review
+### Phase 6 – Store Account, Beta & iOS Launch (3–4 weeks)
+- [ ] **Apple Developer account (USD 99/year)**, ideally under the **company**. A company account requires a D-U-N-S number (free, processing can take a few days).
+- [ ] Set up signing, provisioning and push certificates (APNs)
+- [ ] TestFlight beta (internal and external)
+- [ ] App Store listing, age rating, App Review
 
-### Phase 7 – Android (nach erfolgreichem iOS-Launch)
-- [ ] Entscheid: Skip (Swift → Android) oder separate Kotlin-App
-- [ ] **Google Play Account (25 USD einmalig)**. **Achtung:** Neue private Play-Accounts brauchen **mind. 12 Tester während 14 Tagen** im Closed Testing, bevor sie veröffentlichen dürfen (gilt nicht für Firmen-Accounts).
-- [ ] Android-App bauen, Push via Firebase Cloud Messaging, Google Pay
-- [ ] Play-Store-Listing und Review
+### Phase 7 – Android (after a successful iOS launch)
+- [ ] Decide: Skip (Swift → Android) or a separate Kotlin app
+- [ ] **Google Play account (USD 25 one-time)**. **Note:** New personal Play accounts need **at least 12 testers for 14 days** in closed testing before they can publish (does not apply to organization accounts).
+- [ ] Build the Android app, push via Firebase Cloud Messaging, Google Pay
+- [ ] Play Store listing and review
 
-### Später – Ausbau
-- [ ] Bestell-Service Stufe 2 (Shop-APIs, Partnerprogramme)
-- [ ] Bestell-Service Stufe 3 (Browser-Automatisierung für Top-Shops)
-- [ ] Ausländische Shops (Zoll, Einfuhr-MWST)
+### Later – Expansion
+- [ ] Order service stage 2 (shop APIs, partner programs)
+- [ ] Order service stage 3 (browser automation for top shops)
+- [ ] International shops (customs, import VAT)
 
-**Geschätzte Gesamtdauer:** ca. 5–7 Monate neben Schule oder Job.
+**Estimated total duration:** approx. 5–7 months alongside school or work.
 
 ---
 
-## 5. Arbeitsaufteilung
+## 5. Division of Work
 
-*Vorschlag, an eure Stärken anpassen.*
+*Proposal, adjust to your strengths.*
 
-| Bereich | **Stefan** (App & Produkt) | **Joel** (Backend & Sicherheit) |
+| Area | **Stefan** (App & Product) | **Joel** (Backend & Security) |
 |---|---|---|
-| Phase 0 | Wireframes, Design-System, Xcode-Projekt, SwiftLint | Supabase, CI, Repo-Regeln, Secrets-Management |
-| Phase 1 | Login-, Profil- und Onboarding-Screens, Captcha-Widget | Auth-Konfiguration, Captcha-Prüfung, DB-Schema, RLS, Adress-Verschlüsselung |
-| Phase 2 | Post erstellen, Link-Vorschau, Post-Detailansicht | Scraper-Service, Shop-Parser, Preis-Refresh-Job, Shop-Unterstützung prüfen |
-| Phase 3 | Feed-UI mit Tab-Switch, Freundesliste | Feed-Queries, Ranking, Freundschafts-Logik |
-| Phase 4 | Checkout-Flow, Provisionsanzeige, Statusanzeigen, E-Mail-Templates | Zahlungsanbieter-Integration, Webhooks, Bestell-Service, Admin-Dashboard, E-Mail-Versand |
-| Phase 5 | Melde- und Blockier-UI, AGB-Texte | Admin-Tool, Rate Limiting, Logging, Pentest-Fixes |
-| Phase 6 | App-Store-Listing, Screenshots, TestFlight-Tester organisieren | Apple-Account, Signing, APNs, CI-Builds |
-| Phase 7 | Android-UI (je nach Entscheid Skip oder Kotlin) | Firebase Cloud Messaging, Play-Account, Backend-Anpassungen |
-| Recht | Datenschutzerklärung und AGB formulieren | Bearbeitungsverzeichnis, DSFA, Auftragsverarbeitungsverträge (AVV) |
+| Phase 0 | Wireframes, design system, Xcode project, SwiftLint | Supabase, CI, repo rules, secrets management |
+| Phase 1 | Login, profile and onboarding screens, captcha widget | Auth configuration, captcha verification, DB schema, RLS, address encryption |
+| Phase 2 | Create post, link preview, post detail view | Scraper service, shop parsers, price refresh job, shop support check |
+| Phase 3 | Feed UI with tab switch, friends list | Feed queries, ranking, friendship logic |
+| Phase 4 | Checkout flow, commission display, status views, email templates | Payment provider integration, webhooks, order service, admin dashboard, email delivery |
+| Phase 5 | Report and block UI, terms of service copy | Admin tool, rate limiting, logging, pentest fixes |
+| Phase 6 | App Store listing, screenshots, organize TestFlight testers | Apple account, signing, APNs, CI builds |
+| Phase 7 | Android UI (Skip or Kotlin, depending on decision) | Firebase Cloud Messaging, Play account, backend adjustments |
+| Legal | Draft privacy policy and terms of service | Record of processing activities, DPIA, data processing agreements (DPAs) |
 
-**Gemeinsam:**
-- **Evaluation des Zahlungsanbieters** (Phase 4, Schritt 1)
-- Concierge-Bestellungen im Betrieb abwickeln (Stufe 1)
-- GmbH-Gründung und MWST-Abklärung
-- Jeder Pull Request wird von der anderen Person reviewt (Branch-Schutz auf `main`)
-- Wöchentliches Planning (z.B. GitHub Projects)
-- Eine Person ist offizielle **Datenschutz-Ansprechperson** (Vorschlag: Joel)
-
----
-
-## 6. Sicherheitsmassnahmen
-
-### Adressen (höchster Schutzbedarf)
-- Separate Tabelle `addresses` ohne direkten Lesezugriff aus der App. Auch der Besitzer sieht die Adresse nach dem Speichern nur maskiert.
-- **Verschlüsselung auf Feldebene** (pgsodium/Supabase Vault oder KMS), damit ein DB-Dump allein nicht reicht
-- Entschlüsselt wird **nur durch den Bestell-Service im Moment der Bestellung**, und **jeder Zugriff wird im Audit-Log festgehalten**. Im Concierge-Betrieb (Stufe 1) sieht nur das Team die Adresse, nie der Schenker.
-- Den öffentlichen Ort wählt der Nutzer selbst. Bei kleinen Dörfern besser nur den Kanton zeigen, weil sonst Identifikation möglich ist.
-
-### Zahlungsdaten
-- **Keine Kartendaten bei euch.** Alles läuft über die gehosteten Zahlungsformulare bzw. SDKs des gewählten Zahlungsanbieters (minimaler PCI-Aufwand, SAQ-A).
-- Webhooks des Zahlungsanbieters per Signatur prüfen, Zahlungen idempotent verarbeiten, damit nichts doppelt gebucht wird
-- **Bestellung erst nach bestätigtem Zahlungseingang** (Webhook), nie nur aufgrund einer Meldung aus der App
-- Firmenkarte für Shop-Bestellungen: Limits setzen, wenn möglich virtuelle Karten pro Bestellung, Zugangsdaten nur im Secret Store
-
-### Bestell-Service
-- Shop-Logins und Kartendaten nur in einem Secret Store (z.B. Supabase Vault), nie im Code
-- Jede Bestellung mit eindeutiger ID, Zustandsmaschine und Audit-Log
-- Plausibilitätsprüfung vor jeder Bestellung: Ist der Preis gleich wie beim Checkout? Ist die Adresse in der Schweiz?
-
-### Login & Konten
-- **Captcha** bei Registrierung, Login und Passwort-Reset (Schutz vor Bots, Fake-Accounts und Credential Stuffing)
-- Optionale 2FA oder Passkeys, Sessions und Tokens sicher in der **iOS Keychain** speichern, App Transport Security aktiv lassen (nur HTTPS)
-- Rate Limiting (Login, Post-Erstellung, Scraper, Checkout)
-
-### Link-Scraper (oft unterschätzt)
-- **SSRF-Schutz:** interne IPs sperren (127.x, 10.x, 172.16–31.x, 192.168.x, 169.254.x, IPv6-Pendants), und zwar **nach** der DNS-Auflösung prüfen
-- Nur `https`, Timeout, maximale Antwortgrösse, Redirect-Limit, kein JavaScript ausführen
-- Läuft isoliert und ohne Zugriff auf DB-Secrets
-- Bilder serverseitig neu kodieren (entfernt EXIF-Daten, verhindert Malware)
-- Links gegen Phishing- und Malware-Listen prüfen (z.B. Google Safe Browsing)
-
-### E-Mails
-- SPF, DKIM und DMARC für die Absender-Domain einrichten (damit E-Mails nicht im Spam landen und nicht gefälscht werden können)
-- Keine Adressen und keine sensiblen Daten in E-Mails, nur Status und Link in die App
-
-### Allgemein
-- **Row Level Security** auf allen Tabellen, mit eigenen Tests dafür
-- Secrets nie ins Repo, Dependabot für Swift-Packages und Backend-Abhängigkeiten, keine API-Secrets in der App (nur der öffentliche Supabase-Key, alles Weitere serverseitig)
-- Backups und ein Notfallplan für Datenlecks (wer macht was?)
-- Gegen Missbrauch: Mindestalter, Meldefunktion, **keine Direktnachrichten** unter Fremden (vorerst), Limits für neue Accounts
+**Shared:**
+- **Payment provider evaluation** (phase 4, step 1)
+- Handling concierge orders in operation (stage 1)
+- Company formation and VAT clarification
+- Every pull request is reviewed by the other person (branch protection on `main`)
+- Weekly planning (e.g. GitHub Projects)
+- One person is the official **data protection contact** (proposal: Joel)
 
 ---
 
-## 7. Schweizer Datenschutzgesetz (nDSG, in Kraft seit 1.9.2023)
+## 6. Security Measures
 
-| Pflicht | Artikel | Umsetzung in Wishful |
+### Addresses (highest protection level)
+- Separate `addresses` table with no direct read access from the app. Even the owner only sees the address masked after saving.
+- **Field-level encryption** (pgsodium/Supabase Vault or KMS), so a DB dump alone is not enough
+- Decryption **only by the order service at the moment of ordering**, and **every access is recorded in an audit log**. In concierge mode (stage 1) only the team sees the address, never the gifter.
+- Users choose their public location themselves. For small villages, show only the canton, since the village could otherwise identify the person.
+
+### Payment Data
+- **No card data on your side.** Everything runs through the hosted payment forms/SDKs of the chosen provider (minimal PCI scope, SAQ-A).
+- Verify payment provider webhooks by signature, process payments idempotently to prevent double charges
+- **Place orders only after confirmed payment** (webhook), never based solely on a message from the app
+- Company card for shop orders: set limits, use virtual cards per order where possible, credentials only in a secret store
+
+### Order Service
+- Shop logins and card data only in a secret store (e.g. Supabase Vault), never in code
+- Every order with a unique ID, state machine and audit log
+- Plausibility check before each order: Is the price the same as at checkout? Is the address in Switzerland?
+
+### Login & Accounts
+- **Captcha** on sign-up, login and password reset (protection against bots, fake accounts and credential stuffing)
+- Optional 2FA or passkeys; store sessions and tokens securely in the **iOS Keychain**; keep App Transport Security enabled (HTTPS only)
+- Rate limiting (login, post creation, scraper, checkout)
+
+### Link Scraper (often underestimated)
+- **SSRF protection:** block internal IPs (127.x, 10.x, 172.16–31.x, 192.168.x, 169.254.x, IPv6 equivalents), checked **after** DNS resolution
+- `https` only, timeout, maximum response size, redirect limit, no JavaScript execution
+- Runs isolated, without access to DB secrets
+- Re-encode images server-side (strips EXIF data, prevents malware)
+- Check links against phishing and malware lists (e.g. Google Safe Browsing)
+
+### Emails
+- Set up SPF, DKIM and DMARC for the sender domain (so emails don't land in spam and can't be spoofed)
+- No addresses or sensitive data in emails, only status and a link into the app
+
+### General
+- **Row Level Security** on all tables, with dedicated tests
+- Never commit secrets; Dependabot for Swift packages and backend dependencies; no API secrets in the app (only the public Supabase key, everything else server-side)
+- Backups and an incident response plan for data breaches (who does what?)
+- Abuse prevention: minimum age, reporting, **no direct messages** between strangers (for now), limits for new accounts
+
+---
+
+## 7. Swiss Data Protection Law (revFADP, in force since 2023-09-01)
+
+| Obligation | Article | Implementation in Wishful |
 |---|---|---|
-| Grundsätze: verhältnismässig, zweckgebunden, transparent | Art. 6 | Nur nötige Daten erheben, Adresse ausschliesslich für die Lieferung verwenden |
-| **Privacy by Design und by Default** | Art. 7 | Datenschutzfreundliche Standardeinstellungen, grober Standort, verschlüsselte Adresse |
-| Datensicherheit | Art. 8 | Massnahmen aus Abschnitt 6 |
-| Auftragsbearbeiter | Art. 9 | Auftragsverarbeitungsverträge (AVV/DPA) mit Supabase, Zahlungsanbieter, E-Mail-Dienst, Captcha-Anbieter, Hosting, Push-Dienst |
-| Verzeichnis der Bearbeitungstätigkeiten | Art. 12 | Für KMU mit < 250 MA nur bei hohem Risiko Pflicht, **trotzdem führen** |
-| Bekanntgabe ins Ausland | Art. 16 | EU-Hosting ist unproblematisch, bei US-Diensten auf Zertifizierung unter dem Swiss-US Data Privacy Framework achten |
-| **Informationspflicht / Datenschutzerklärung** | Art. 19 | In der App und im Store verlinkt: welche Daten, Zweck, Empfänger (**auch: Adresse geht an den jeweiligen Shop zur Lieferung**), Länder, Rechte |
-| Datenschutz-Folgenabschätzung (DSFA) | Art. 22 | **Empfohlen** wegen Adressen, Zahlungen und Feed-Profiling |
-| Meldung von Datenlecks an den EDÖB | Art. 24 | «So rasch als möglich» bei hohem Risiko, Ablauf vorab festlegen |
-| Auskunftsrecht | Art. 25 | Datenexport in der App, Antwort innert 30 Tagen |
-| Datenherausgabe / Portabilität | Art. 28 | Export als JSON |
-| Löschung | Art. 32 | Account-Löschung mit echter Löschung (Backups mit Frist; Bestell- und Buchhaltungsdaten müssen **10 Jahre aufbewahrt** werden, OR Art. 958f) |
+| Principles: proportionality, purpose limitation, transparency | Art. 6 | Collect only necessary data, use the address exclusively for delivery |
+| **Privacy by design and by default** | Art. 7 | Privacy-friendly defaults, coarse location, encrypted address |
+| Data security | Art. 8 | Measures from section 6 |
+| Processors | Art. 9 | Data processing agreements (DPAs) with Supabase, payment provider, email service, captcha provider, hosting, push service |
+| Record of processing activities | Art. 12 | Only mandatory for companies with < 250 employees if high risk; **keep one anyway** |
+| Cross-border disclosure | Art. 16 | EU hosting is unproblematic; for US services check certification under the Swiss-US Data Privacy Framework |
+| **Duty to inform / privacy policy** | Art. 19 | Linked in the app and store: which data, purpose, recipients (**including: address is passed to the respective shop for delivery**), countries, rights |
+| Data protection impact assessment (DPIA) | Art. 22 | **Recommended** due to addresses, payments and feed profiling |
+| Reporting data breaches to the FDPIC | Art. 24 | "As soon as possible" if high risk; define the process in advance |
+| Right of access | Art. 25 | Data export in the app, response within 30 days |
+| Data portability | Art. 28 | Export as JSON |
+| Deletion | Art. 32 | Account deletion with actual deletion (backups with retention period; order and accounting records must be **retained for 10 years**, Swiss Code of Obligations Art. 958f) |
 
-> ⚠️ **Wichtig:** Das nDSG büsst **natürliche Personen** (also euch persönlich, nicht die Firma) mit bis zu **CHF 250'000**. Deshalb die Pflichten ernst nehmen und eine **GmbH gründen**.
+> **Important:** The revFADP fines **individuals** (i.e. you personally, not the company) up to **CHF 250,000**. Take these obligations seriously and **found a company**.
 
-### Weitere rechtliche Punkte
-- **DSGVO:** gilt zusätzlich, sobald ihr Nutzer in der EU ansprecht. Dann braucht es eventuell eine EU-Vertretung (Art. 27 DSGVO).
-- **Impressum und AGB:** Pflicht für Online-Angebote (UWG Art. 3 Abs. 1 lit. s). Die Provision muss **vor der Zahlung klar ausgewiesen** sein (Preisbekanntgabeverordnung).
-- **AGB der Shops:** Viele Shops verbieten automatisierte Bestellungen (Bots) oder Wiederverkauf. Vor Stufe 3 pro Shop prüfen, Partnerschaften bevorzugen.
-- **MWST:** Registrierungspflicht ab CHF 100'000 Umsatz. Ob der Artikelpreis oder nur die Provision zählt, hängt vom Modell ab (Vermittler oder Wiederverkäufer), deshalb mit Treuhand klären.
-- **Geldwäschereigesetz (GwG):** Mit Option D bezahlt der Schenker ein Produkt und schickt kein Geld an Private. Das reduziert das Thema stark. Trotzdem mit dem Zahlungsanbieter abklären.
-- **Affiliate-Links:** falls genutzt, als Werbung kennzeichnen
-- Für DSFA, AGB und MWST eine kurze **Rechtsberatung** einplanen (Startup-Angebote, z.B. über Hochschulen oder Startup-Programme)
+### Further Legal Points
+- **GDPR:** Applies additionally once you target users in the EU. You may then need an EU representative (Art. 27 GDPR).
+- **Legal notice and terms of service:** Mandatory for online offerings (Swiss Unfair Competition Act, Art. 3 para. 1 lit. s). The commission must be **clearly shown before payment** (Swiss Price Disclosure Ordinance).
+- **Shop terms:** Many shops prohibit automated orders (bots) or resale. Check per shop before stage 3; prefer partnerships.
+- **VAT:** Registration mandatory from CHF 100,000 revenue. Whether the item price or only the commission counts depends on the model (intermediary vs. reseller); clarify with an accountant.
+- **Anti-Money Laundering Act (AMLA):** With option D the gifter pays for a product and does not send money to private individuals, which greatly reduces this issue. Still clarify with the payment provider.
+- **Affiliate links:** If used, label them as advertising.
+- Budget for brief **legal advice** on the DPIA, terms of service and VAT (startup programs, e.g. via universities or incubators)
+- **International expansion:** Each new market brings its own data protection, consumer protection and tax rules; review before launching there.
 
 ---
 
-## 8. Risiken
+## 8. Risks
 
-| Stufe | Risiko | Gegenmassnahme |
+| Level | Risk | Mitigation |
 |---|---|---|
-| **HOCH** | **Minderjährige erhalten Geschenke von Fremden** (Grooming-Gefahr) | 18+ im MVP, keine Direktnachrichten, Meldefunktion, Moderation |
-| **HOCH** | **Automatische Bestellung scheitert** (Bot-Schutz, Shop-Änderungen, ausverkauft) | Stufenweise Umsetzung (Concierge zuerst), automatische Rückerstattung, Shop-Positivliste |
-| **HOCH** | Betrug (gestohlene Karten, Chargebacks nach der Bestellung) | Betrugserkennung des Zahlungsanbieters, 3-D Secure, Limits für neue Accounts |
-| **HOCH** | Preis ändert sich zwischen Post und Kauf | Live-Preisprüfung im Checkout, Bestellung abbrechen und erstatten bei Abweichung |
-| **MITTEL** | Provision deckt die Kosten nicht (Gebühren, Retouren) | Kalkulation pro Zahlungsanbieter, Provision nur auf den Artikelpreis, Modell nach der Beta überprüfen |
-| **MITTEL** | MWST-Pflicht früher als erwartet | Früh mit Treuhand klären |
-| **MITTEL** | Ablehnung im App-Store-Review (Moderation, Zahlungsablauf) | Guidelines 1.2, 3.1.5 und 5.1.1 vor dem Bau prüfen |
-| **MITTEL** | Datenleck bei den Adressen | Verschlüsselung, Audit-Log, Pentest |
-| **NIEDRIG** | Urheberrecht an Produktbildern | Nur als Vorschau mit Quellenlink, nicht dauerhaft weiterverwenden |
+| **HIGH** | **Minors receiving gifts from strangers** (grooming risk) | 18+ in the MVP, no direct messages, reporting, moderation |
+| **HIGH** | **Automated ordering fails** (bot protection, shop changes, sold out) | Staged rollout (concierge first), automatic refunds, shop allowlist |
+| **HIGH** | Fraud (stolen cards, chargebacks after ordering) | Payment provider fraud detection, 3-D Secure, limits for new accounts |
+| **HIGH** | Price changes between posting and purchase | Live price check at checkout, cancel and refund on deviation |
+| **MEDIUM** | Commission doesn't cover costs (fees, returns) | Calculate per payment provider, commission on item price only, review model after beta |
+| **MEDIUM** | VAT obligation earlier than expected | Clarify early with an accountant |
+| **MEDIUM** | App Store rejection (moderation, payment flow) | Review Guidelines 1.2, 3.1.5 and 5.1.1 before building |
+| **MEDIUM** | Address data breach | Encryption, audit log, pentest |
+| **LOW** | Copyright on product images | Use as preview with source link only, no permanent reuse |
 
 ---
 
-## 9. Offene Fragen
+## 9. Open Questions
 
-1. **Welcher Zahlungsanbieter?** Stripe, Datatrans, Payrexx, Wallee oder Adyen (Vergleich in Phase 4)
-2. Mindestalter 18+, einverstanden?
-3. Wer kann was? (Erfahrung mit Swift/SwiftUI oder Backend?) → Aufteilung anpassen
-4. **Wer hat einen Mac mit Xcode?** Ohne Mac ist Swift-Entwicklung kaum möglich.
-5. **Android:** iOS zuerst (Empfehlung), Skip oder separate Kotlin-App?
-6. Start nur mit Schweizer Shops, einverstanden?
-7. Wer trägt die Versandkosten? (Vorschlag: Schenker, ohne Provision darauf)
-8. Was passiert bei Retouren bzw. wenn der Empfänger das Geschenk nicht will?
-9. Treten wir rechtlich als **Vermittler** oder als **Wiederverkäufer** auf? (Auswirkung auf MWST und Haftung)
+1. **Which payment provider?** Stripe, Datatrans, Payrexx, Wallee or Adyen (comparison in phase 4)
+2. Minimum age 18+, agreed?
+3. Who can do what? (Experience with Swift/SwiftUI or backend?) → adjust division of work
+4. **Who has a Mac with Xcode?** Swift development is barely possible without one.
+5. **Android:** iOS first (recommended), Skip, or a separate Kotlin app?
+6. Start with Swiss shops only, agreed?
+7. Who pays shipping? (Proposal: the gifter, without commission on it)
+8. What happens with returns, or if the recipient doesn't want the gift?
+9. Do we legally act as an **intermediary** or a **reseller**? (Impact on VAT and liability)

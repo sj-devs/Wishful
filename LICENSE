@@ -1,82 +1,55 @@
-Wishful – Proprietäre Lizenz / Proprietary License
+Wishful – Proprietary License
 
-Copyright (c) 2026 Stefan Matteo Kauflin und Joel Felix
-Alle Rechte vorbehalten. / All rights reserved.
+Copyright (c) 2026 Stefan Matteo Kauflin and Joel Felix
+All rights reserved.
 
-================================================================================
-DEUTSCH (massgebende Fassung)
-================================================================================
+1. Copyright Holders
+   All rights to this software, including but not limited to source code,
+   object code, design, graphics, text, documentation, concepts and the name
+   "Wishful" (the "Software"), are held exclusively by Stefan Matteo Kauflin
+   and Joel Felix (the "Copyright Holders").
 
-1. Rechteinhaber
-   Sämtliche Rechte an dieser Software, einschliesslich Quellcode, Objektcode,
-   Design, Grafiken, Texten, Dokumentation, Konzepten und Namen ("Wishful"),
-   (nachfolgend "Software") liegen ausschliesslich bei Stefan Matteo Kauflin
-   und Joel Felix (nachfolgend "Rechteinhaber").
+2. No License Granted
+   Access to or viewing of this repository does not grant any rights to the
+   Software. Without the prior, express and written consent of both Copyright
+   Holders, you may not, in particular:
+   a) copy, reproduce or download the Software, in whole or in part, except
+      as technically necessary for mere viewing;
+   b) fork, clone, mirror or otherwise redistribute, make publicly available
+      or publish the Software;
+   c) modify, translate, adapt or create derivative works of the Software;
+   d) use the Software for commercial or non-commercial purposes, or sell,
+      rent, lease, sublicense or otherwise make it available to third parties;
+   e) decompile, disassemble or otherwise reverse engineer the Software, to
+      the extent permitted by law;
+   f) use the Software or any part of it to train machine learning or
+      artificial intelligence models;
+   g) remove or alter any copyright notice, trademark or this license text.
 
-2. Keine Lizenzerteilung
-   Die Einsicht in dieses Repository gewährt keinerlei Nutzungsrechte. Ohne
-   vorgängige, ausdrückliche und schriftliche Zustimmung beider Rechteinhaber
-   ist insbesondere untersagt:
-   a) die Software ganz oder teilweise zu kopieren, zu vervielfältigen oder
-      herunterzuladen, ausser soweit technisch zur blossen Ansicht nötig;
-   b) die Software zu forken, zu klonen, zu spiegeln oder anderweitig
-      weiterzuverbreiten, öffentlich zugänglich zu machen oder zu veröffentlichen;
-   c) die Software zu verändern, zu übersetzen, zu bearbeiten oder abgeleitete
-      Werke daraus zu erstellen;
-   d) die Software kommerziell oder nicht-kommerziell zu nutzen, zu verkaufen,
-      zu vermieten, zu lizenzieren oder Dritten zur Verfügung zu stellen;
-   e) die Software zu dekompilieren, zu disassemblieren oder anderweitig
-      zurückzuentwickeln (Reverse Engineering), soweit gesetzlich zulässig;
-   f) die Software oder Teile davon zum Training von Machine-Learning- oder
-      KI-Modellen zu verwenden;
-   g) Copyright-Vermerke, Marken oder diesen Lizenztext zu entfernen oder zu
-      verändern.
+3. Contributions
+   Contributions of any kind (pull requests, patches, issues containing code,
+   suggestions) are accepted only upon prior written invitation by both
+   Copyright Holders. By submitting an approved contribution, the contributor
+   assigns all transferable rights in it to the Copyright Holders free of
+   charge and without limitation in time or territory, and waives, to the
+   extent permitted by law, the assertion of moral rights.
 
-3. Beiträge (Contributions)
-   Beiträge jeglicher Art (Pull Requests, Patches, Issues mit Code, Vorschläge)
-   werden nur nach vorgängiger schriftlicher Einladung durch beide
-   Rechteinhaber entgegengenommen. Wer mit Zustimmung einen Beitrag leistet,
-   überträgt sämtliche übertragbaren Rechte daran unentgeltlich, zeitlich und
-   örtlich unbeschränkt an die Rechteinhaber und verzichtet, soweit gesetzlich
-   zulässig, auf die Geltendmachung von Urheberpersönlichkeitsrechten.
+4. Disclaimer of Warranty
+   The Software is provided "as is", without warranty of any kind, express or
+   implied. To the extent permitted by law, the Copyright Holders shall not be
+   liable for any damages arising from the Software.
 
-4. Gewährleistungsausschluss
-   Die Software wird ohne jegliche Gewährleistung bereitgestellt. Eine Haftung
-   der Rechteinhaber ist ausgeschlossen, soweit gesetzlich zulässig.
+5. Infringement
+   Any use outside the scope of this license constitutes copyright
+   infringement. The Copyright Holders reserve all civil and criminal remedies,
+   in particular under the Swiss Federal Act on Copyright and Related Rights
+   (Copyright Act, CopA).
 
-5. Rechtsverletzungen
-   Jede Nutzung ausserhalb dieser Bestimmungen stellt eine Verletzung des
-   Urheberrechts dar. Die Rechteinhaber behalten sich sämtliche zivil- und
-   strafrechtlichen Schritte vor, insbesondere gemäss dem Schweizerischen
-   Bundesgesetz über das Urheberrecht und verwandte Schutzrechte (URG).
+6. Governing Law and Jurisdiction
+   This license is governed exclusively by Swiss law, excluding its conflict
+   of laws rules. Place of jurisdiction is the domicile of either Copyright
+   Holder in Switzerland.
 
-6. Anwendbares Recht und Gerichtsstand
-   Es gilt ausschliesslich schweizerisches Recht unter Ausschluss des
-   Kollisionsrechts. Gerichtsstand ist der Wohnsitz eines der Rechteinhaber
-   in der Schweiz.
-
-7. Kontakt
-   Anfragen für Nutzungsrechte oder Zusammenarbeit sind an die Rechteinhaber
-   über das GitHub-Repository zu richten.
-
-================================================================================
-ENGLISH (convenience translation – the German version prevails)
-================================================================================
-
-All rights to this software, including source code, object code, design,
-graphics, texts, documentation, concepts and the name "Wishful" are held
-exclusively by Stefan Matteo Kauflin and Joel Felix.
-
-Viewing this repository grants no rights whatsoever. Without the prior, express
-and written consent of both rights holders, you may NOT copy, download, fork,
-clone, mirror, redistribute, publish, modify, create derivative works from,
-use (commercially or non-commercially), sell, sublicense, reverse engineer,
-or use this software for training machine-learning / AI models, nor remove
-any copyright notice.
-
-Contributions are only accepted upon prior written invitation by both rights
-holders. Any accepted contribution transfers all transferable rights to the
-rights holders free of charge.
-
-The software is provided "as is" without warranty of any kind. Swiss law
-applies exclusively.
+7. Contact
+   Requests for usage rights or collaboration should be directed to the
+   Copyright Holders via the GitHub repository.
