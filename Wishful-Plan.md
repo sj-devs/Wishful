@@ -85,7 +85,7 @@ Examples:
 | App (iOS) | **Swift + SwiftUI** (native), Xcode, Swift Package Manager | Best performance and Apple integration (Apple Pay, Keychain, push, Sign in with Apple). **Requires a Mac with Xcode.** |
 | App (Android) | **Open** (see below) | Swift doesn't run directly on Android |
 | Backend code | Supabase Edge Functions (TypeScript/Deno) or server-side Swift (Vapor) | Server only; the app stays Swift |
-| Backend | **Supabase** (Postgres, Auth, Storage, Edge Functions), region **EU (Frankfurt) or Zurich** | Row Level Security, fast start, data stays in Europe |
+| Backend | **Supabase** (Postgres, Auth, Storage, Edge Functions), region **EU (Paris, eu-west-3)** | Row Level Security, fast start, data stays in the EU (adequate data protection level under the revFADP) |
 | Captcha | **Cloudflare Turnstile** or **hCaptcha** | Natively supported by Supabase Auth, more privacy-friendly than Google reCAPTCHA |
 | Link scraper | Separate, isolated service (Cloud Run / Fly.io) | Isolated from the backend due to SSRF risk (see section 6) |
 | Order service | Separate service with a job queue (stage 1: admin dashboard) | Reliable, retryable, traceable orders |
@@ -119,7 +119,11 @@ Swift apps only run on Apple devices. There are three paths to Android:
 ### Phase 0 – Decisions & Setup (1–2 weeks) · Complexity: low
 - [ ] Set minimum age (recommendation: **18+**)
 - [ ] Clarify who has a Mac with Xcode (required for Swift development)
-- [ ] GitHub repo, CI (GitHub Actions with macOS runner), Xcode project (SwiftUI, iOS 17+), Supabase project in the EU region
+- [x] GitHub repo with license and code owners
+- [x] Supabase project created (EU, Paris)
+- [x] Name "Wishful" checked: available
+- [ ] CI/CD pipeline, branch protection, project board
+- [ ] App skeleton (Xcode project with SwiftUI, iOS 17+, or Expo, depending on the Mac decision)
 - [ ] Define code style: SwiftLint, SwiftFormat, architecture (e.g. MVVM with `@Observable`), tests with Swift Testing / XCTest
 - [ ] Wireframes in Figma
 
@@ -183,10 +187,10 @@ Swift apps only run on Apple devices. There are three paths to Android:
 
 *Proposal, adjust to your strengths.*
 
-| Area | **Stefan** (App & Product) | **Joel** (Backend & Security) |
+| Area | **Stefan** (Design, Data & Product) | **Joel** (DevOps, Git, Expo & Auth) |
 |---|---|---|
-| Phase 0 | Wireframes, design system, Xcode project, SwiftLint | Supabase, CI, repo rules, secrets management |
-| Phase 1 | Login, profile and onboarding screens, captcha widget | Auth configuration, captcha verification, DB schema, RLS, address encryption |
+| Phase 0 | Figma wireframes, design system, Supabase CLI, DB schema with RLS, app skeleton | GitHub Projects board, branch protection, CI/CD pipeline, Expo setup |
+| Phase 1 | Profile and onboarding screens, address table with encryption | Auth configuration, login screens, captcha (widget and verification) |
 | Phase 2 | Create post, link preview, post detail view | Scraper service, shop parsers, price refresh job, shop support check |
 | Phase 3 | Feed UI with tab switch, friends list | Feed queries, ranking, friendship logic |
 | Phase 4 | Checkout flow, commission display, status views, email templates | Payment provider integration, webhooks, order service, admin dashboard, email delivery |
@@ -196,6 +200,7 @@ Swift apps only run on Apple devices. There are three paths to Android:
 | Legal | Draft privacy policy and terms of service | Record of processing activities, DPIA, data processing agreements (DPAs) |
 
 **Shared:**
+- **API keys and secrets management** (public keys into the app config, `service_role` key never in the app or repo)
 - **Payment provider evaluation** (phase 4, step 1)
 - Handling concierge orders in operation (stage 1)
 - Company formation and VAT clarification
