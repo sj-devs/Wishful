@@ -6,6 +6,30 @@ Post a wish with a title and a product link, and the price and image are detecte
 
 **Status:** In planning, see the [project plan](Wishful-Plan.md).
 
+## Project Structure
+
+```
+src/
+├── app/                  # Routes only (Expo Router) – every file is a screen
+│   ├── _layout.tsx       # Root layout: theme, splash screen, root stack
+│   └── (tabs)/           # Tab navigation group
+│       ├── _layout.tsx   # Renders the tab bar
+│       ├── index.tsx     # Home
+│       └── explore.tsx   # Explore
+├── components/
+│   ├── navigation/       # Tab bar (native + web variant)
+│   ├── splash/           # Animated splash overlay / app icon
+│   └── ui/               # Reusable UI building blocks (themed text/view, links, …)
+├── constants/            # Theme tokens (colors, fonts, spacing)
+├── hooks/                # Shared React hooks
+├── lib/                  # Clients and integrations (Supabase)
+└── styles/               # Global CSS (web)
+assets/                   # Images, icons, splash
+scripts/                  # Project tooling
+```
+
+Imports use the `@/` alias for `src/` (e.g. `@/components/ui/themed-text`, `@/lib/supabase`).
+
 ## Team
 
 - Stefan Matteo Kauflin ([@MrKringel76](https://github.com/MrKringel76))
